@@ -28,7 +28,7 @@ extractor = get_extractor(
     model_parameters=model_parameters,
 )
 
-root='../test_images/' # (e.g., './images/)
+root='../images_000/' # (e.g., './images/)
 batch_size = 32
 
 dataset = ImageDataset(
@@ -48,7 +48,7 @@ batches = DataLoader(
 module_name = 'visual'
 
 def get_features():
-    # we are creating 1024 length vectors
+    # we are creating 512 length vectors
     features = extractor.extract_features(
         batches=batches,
         module_name=module_name,

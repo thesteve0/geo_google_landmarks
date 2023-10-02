@@ -1,0 +1,15 @@
+import db_query
+import db_upload
+import make_embeddings_query
+from pathlib import Path
+
+image_path = Path("../query_image")
+
+vector = make_embeddings_query.get_features()
+
+query = db_query.DBQuery(512, "images")
+results = query.query_vector(vector)
+for result in results:
+    print("name : " + result.payload["picture"] + " :: score: " + str(result.score))
+
+print("huh")
