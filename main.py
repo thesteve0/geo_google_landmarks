@@ -43,7 +43,7 @@ for line in csvlines:
 
                 # We have our payload at this point
                     print("found one " + line['id'] + " : " + line['url'] + " coords: " + str(lat) + ", " + str(lon))
-                    payloads_non_list[line['id']] = {"picture": line['id'], "filename": match.string, "url": line['url'], "location": {"lon": lon, "lat": lat}}
+                    payloads_non_list[line['id']] = {"picture": line['id'], "filename": str(image_names[line['id']]), "url": line['url'], "location": {"lon": lon, "lat": lat}}
         except:
             print("Threw an exception on: " + line['id'])
 
