@@ -38,8 +38,8 @@ for line in csvlines:
             our_tag = html.find('a', {"data-style": "osm-intl"})
             if our_tag is not None:
                 if "data-lat" in our_tag.attrs and "data-lon" in our_tag.attrs:
-                    lat = our_tag.attrs["data-lat"]
-                    lon = our_tag.attrs["data-lon"]
+                    lat = float(our_tag.attrs["data-lat"])
+                    lon = float(our_tag.attrs["data-lon"])
 
                 # We have our payload at this point
                     print("found one " + line['id'] + " : " + line['url'] + " coords: " + str(lat) + ", " + str(lon))
