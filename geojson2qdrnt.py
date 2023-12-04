@@ -28,6 +28,7 @@ def geoJSON_string2qjson(geojson_input: geojson):
 
 
 def geoJSON_string2qgeom(geojson_input: geojson):
+    coord_array = geoJSON2coord_list((geojson_input))
     print("not yet")
 
 if __name__ == '__main__':

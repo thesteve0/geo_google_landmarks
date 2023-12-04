@@ -5,14 +5,15 @@ from thingsvision.utils.storing import save_features
 from thingsvision.utils.data import ImageDataset, DataLoader
 
 source = 'custom'
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cpu'
 model_name = 'clip'
 model_parameters = {
     'variant': 'ViT-B/32'
     # This model creates 512 length vectors
 }
 
-# This model is more accurate but takes longer to run and not sure we need it for the demo
+# https://github.com/mlfoundations/open_clip
+# T#his model is more accurate but takes longer to run and not sure we need it for the demo
 # model_name = 'OpenCLIP'
 # model_parameters = {
 #     'variant': 'ViT-H-14',
@@ -28,12 +29,12 @@ extractor = get_extractor(
     model_parameters=model_parameters,
 )
 
-root='../images_000/' # (e.g., './images/)
+root='../../query_image/' # (e.g., './images/)
 batch_size = 32
 
 dataset = ImageDataset(
     root=root,
-    out_path='../test_vectors',
+    out_path='../../query_image',
     backend=extractor.get_backend(), # backend framework of model
     transforms=extractor.get_transformations(resize_dim=256, crop_dim=224) # set the input dimensionality to whichever values are required for your pretrained model
 )
@@ -48,7 +49,7 @@ batches = DataLoader(
 module_name = 'visual'
 
 def get_features():
-    # we are creating 512 length vectors
+    # we are creating 1024 length vectors
     features = extractor.extract_features(
         batches=batches,
         module_name=module_name,
@@ -63,11 +64,7 @@ def get_features():
 
     # save_features(features, out_path='../test_vectors', file_format='txt') # file_format can be set to "npy", "txt", "mat", "pt", or "hdf5"
 
-    vectors = {}
-    for i in range(len(dataset.file_names)):
-        vectors[dataset.file_names[i][0:16]] = features[i]
-
-    return vectors
+    return features
 
 
 if __name__ == '__main__':
