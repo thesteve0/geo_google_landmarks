@@ -28,7 +28,7 @@ extractor = get_extractor(
     model_parameters=model_parameters,
 )
 
-root='../images_000/' # (e.g., './images/)
+root='images_000/' # (e.g., './images/)
 batch_size = 32
 
 dataset = ImageDataset(

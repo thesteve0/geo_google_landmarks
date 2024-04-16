@@ -2,7 +2,7 @@ import db_query
 import make_embeddings_query
 from pathlib import Path
 
-image_path = Path("../../query_image")
+image_path = Path("../query_image")
 
 vector = make_embeddings_query.get_features()
 

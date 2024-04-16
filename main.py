@@ -16,19 +16,17 @@ import make_embeddings_upload
 #TODO there is also repeated code everywhere
 # And hard coded values for too many things
 
-image_path = Path("../images_000")
+image_path = Path("images_000")
 
-my_file = Path('../train_attribution_geo.json')
+my_file = Path('train_attribution_geo.json')
 payloads_non_list = {}
 if my_file.is_file():
-    # file exists
-
-    with open('../train_attribution_geo.json') as incoming_json:
+    # file already exists
+    with open('train_attribution_geo.json') as incoming_json:
         payloads_non_list = json.load(incoming_json)
     print("We already have metadata load the data into python non-list")
-
 else:
-    metadata_path = "../train_attribution.csv"
+    metadata_path = "train_attribution.csv"
     image_names = {}
 
     for path in image_path.rglob('*.*'):
@@ -59,7 +57,7 @@ else:
     csvfile.close()
     # Write our payloads out to file
 
-    with open('../train_attribution_geo.json', 'w') as out_file:
+    with open('train_attribution_geo.json', 'w') as out_file:
         json.dump(payloads_non_list, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
 
@@ -90,7 +88,7 @@ for key, payload in payloads_non_list.items():
     id_payload_vectors.append(json_item)
 
 # write ids, payloads, and vectors out to a JSON file
-with open("../id_payload_vector.json", 'w') as full_file:
+with open("id_payload_vector.json", 'w') as full_file:
     json.dump(id_payload_vectors, full_file, sort_keys=True, indent=4,
               ensure_ascii=False)
 
