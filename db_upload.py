@@ -1,5 +1,7 @@
 import psycopg
 from pgvector.psycopg import register_vector
+from postgis.psycopg import register
+
 
 
 class DBUpload:
@@ -36,6 +38,7 @@ class DBUpload:
         connect_string = f"host=localhost user=postgres password='letmein' dbname='{self.DB_NAME}'"
         conn = psycopg.connect(connect_string, autocommit=True)
         register_vector(conn)
+        register(conn)
 
         conn.execute('DROP TABLE IF EXISTS %s' %  self.table_name)
 
@@ -44,10 +47,18 @@ class DBUpload:
                             filename text, 
                             picture text,
                             url text,
-                            location geography(POINT,4326) 
+                            location geography(POINT,4326), 
                             embedding vector(%s))""" % (self.table_name, self.vector_size,))
-
+        conn.commit()
         # Copy in spatial data ST_Point(location["lon"), location["lat"])
+
+        with conn.cursor().copy("COPY %s (filename, picture, url, location, embedding) FROM STDIN with (FORMAT BINARY)" % (self.table_name)) as copy:
+        #     print("working on: " + str(path))
+             copy.set_types(['text', 'text', 'text', 'geography', 'vector'])
+             for i in range (0,len(vectors)):
+                location = "ST_Point( %s,  %s)" % (payloads[i]["location"]["lon"],  payloads[i]["location"]["lat"])
+                copy.write_row([payloads[i]["filename"], payloads[i]["picture"], payloads[i]["url"], location, vectors[i]])
+
 
         # create spatial and hnsw indices
 
