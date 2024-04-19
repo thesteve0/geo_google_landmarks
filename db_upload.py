@@ -1,6 +1,6 @@
 import psycopg
 from pgvector.psycopg import register_vector
-from postgis.psycopg import register
+#from postgis.psycopg import register
 
 
 
@@ -38,7 +38,7 @@ class DBUpload:
         connect_string = f"host=localhost user=postgres password='letmein' dbname='{self.DB_NAME}'"
         conn = psycopg.connect(connect_string, autocommit=True)
         register_vector(conn)
-        register(conn)
+        #register(conn)
 
         conn.execute('DROP TABLE IF EXISTS %s' %  self.table_name)
 
@@ -52,16 +52,20 @@ class DBUpload:
         conn.commit()
         # Copy in spatial data ST_Point(location["lon"), location["lat"])
 
-        with conn.cursor().copy("COPY %s (filename, picture, url, location, embedding) FROM STDIN with (FORMAT BINARY)" % (self.table_name)) as copy:
-        #     print("working on: " + str(path))
-             copy.set_types(['text', 'text', 'text', 'geography', 'vector'])
+        with conn.cursor().copy("COPY %s (filename, picture, url, location, embedding) FROM STDIN" % (self.table_name)) as copy:
              for i in range (0,len(vectors)):
-                location = "ST_Point( %s,  %s)" % (payloads[i]["location"]["lon"],  payloads[i]["location"]["lat"])
+                location = "POINT( %s  %s)" % (payloads[i]["location"]["lon"],  payloads[i]["location"]["lat"])
                 copy.write_row([payloads[i]["filename"], payloads[i]["picture"], payloads[i]["url"], location, vectors[i]])
 
-
         # create spatial and hnsw indices
+        print("making spatial index\n")
+        conn.execute("CREATE INDEX %s_location_idx  on %s USING GIST(location)" % (self.table_name, self.table_name))
+        conn.commit()
 
+        print("creating HNSW index")
+        conn.execute("set maintenance_work_mem to '350MB'")
+        conn.execute("""CREATE INDEX idx_%s_hnsw ON %s USING hnsw  
+                            (embedding vector_cosine_ops) WITH (m = 10, ef_construction = 40)""" % (self.table_name, self.table_name))
         conn.commit()
         conn.close()
 
