@@ -2,6 +2,7 @@ import db_query
 import make_embeddings_query
 from pathlib import Path
 
+#TODO  I think this can be deleted
 image_path = Path("../query_image")
 
 vector = make_embeddings_query.get_features()
