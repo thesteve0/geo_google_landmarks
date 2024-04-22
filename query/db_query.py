@@ -12,37 +12,20 @@ class DBQuery:
     # just a normal vector query
     def query_vector(self, vector):
         with self.conn.cursor() as cur:
-            cur.execute(SQL)
+            results = cur.execute('SELECT id, (embedding <=> %s) as distance, abstract '
+                                   'FROM images ORDER BY embedding <=> %s LIMIT 10', (vector, vector, )).fetchall()
 
-        vector = vector[0]
-        search_result = self.client.search(
-            collection_name=self.collection_name,
-            query_vector=vector,
-            limit=20
-        )
-        return search_result
+        for result in results:
+            print("id: " + str(result[0]) + " || distance: " +  str(result[1]) + " || abstract: " + result[2][:50])
 
     # this one includes spatial
     # for the workshop we will hardcode the country to use
-    def query_geo_vector(self, vector):
-        vector = vector[0]
-        search_result = self.client.search(
-            collection_name=self.collection_name,
-            query_vector=vector,
-            limit=20,
-            query_filter=models.Filter(
-                must=[
-                    models.FieldCondition(
-                    key="location",
-                    geo_radius=models.GeoRadius(
-                        center=models.GeoPoint(
-                            lat=41.417733,
-                            lon=-77.473338,
-                        ),
-                        radius=1000000.0,
-                    ),
-                )
-                ]
-            )
-        )
-        return search_result
+    def query_geo_vector(self, vector, country):
+        with self.conn.cursor() as cur:
+            results = cur.execute('SELECT id, (embedding <=> %s) as distance, abstract '
+                                  'FROM images ORDER BY embedding <=> %s LIMIT 10', (vector, vector, )).fetchall()
+
+
+            for result in results:
+                print("id: " + str(result[0]) + " || distance: " +  str(result[1]) + " || abstract: " + result[2][:50])
+            return search_result
