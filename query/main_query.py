@@ -13,6 +13,6 @@ querier.query_vector(vector)
 
 print("\n\n------------  Now a geo query in canada---\n\n")
 
-querier.query_geo_vector(embedding=vector, country="DE")
+querier.query_geo_vector(embedding=vector, country="CA")
 
 print("finished")
