@@ -31,7 +31,7 @@ extractor = get_extractor(
 )
 
 ####### devcontainer paths are getting somewhere I can't figure out so we have to do this
-root='../query_image/' # (e.g., './images/)
+root='./query_image/' # (e.g., './images/)
 
 # on local machine
 #root='../query_image/' # (e.g., './images/)
