@@ -6,6 +6,7 @@ from thingsvision.utils.data import ImageDataset, DataLoader
 
 source = 'custom'
 device = 'cpu'
+# https://vicco-group.github.io/thingsvision/AvailableModels.html
 model_name = 'clip'
 model_parameters = {
     'variant': 'ViT-B/32'
