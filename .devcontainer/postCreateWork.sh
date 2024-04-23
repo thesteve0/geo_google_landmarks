@@ -11,9 +11,9 @@ tar -xvf image_query_files.tar.gz
 wait
 echo untarred
 
-PGPASSWORD=letmein createdb -h localhost -U postgres geoimage
+PGPASSWORD=letmein /usr/bin/createdb -h localhost -U postgres geoimage
 wait
-PGPASSWORD=letmein gunzip -c geo_image_dump_sql.gz | psql -h localhost -U postgres geoimage
+PGPASSWORD=letmein /usr/bin/gunzip -c geo_image_dump_sql.gz | psql -h localhost -U postgres geoimage
 wait
 
 pip install openai-clip

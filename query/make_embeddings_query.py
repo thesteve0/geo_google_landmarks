@@ -30,12 +30,18 @@ extractor = get_extractor(
     model_parameters=model_parameters,
 )
 
+####### devcontainer paths are getting somewhere I can't figure out so we have to do this
 root='../query_image/' # (e.g., './images/)
+
+# on local machine
+#root='../query_image/' # (e.g., './images/)
 batch_size = 1
 
 dataset = ImageDataset(
     root=root,
-    out_path='../test_images',
+    ##### same problem as above
+    out_path='./test_images',
+    # out_path='../test_images',
     backend=extractor.get_backend(), # backend framework of model
     transforms=extractor.get_transformations(resize_dim=256, crop_dim=224) # set the input dimensionality to whichever values are required for your pretrained model
 )
