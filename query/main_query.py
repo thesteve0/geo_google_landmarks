@@ -6,15 +6,13 @@ from pathlib import Path
 
 vector = make_embeddings_query.get_features()
 
-db_query.DBQuery(vector)
-# results = query.query_vector(vector)
+querier = db_query.DBQuery()
+querier.query_vector(vector)
 # for result in results:
 #     print("name : " + result.payload["picture"] + " :: score: " + str(result.score))
 
-print("\n\n------------  Now a geo query centered in Pennsylvania with a 1000 km radius---\n\n")
+print("\n\n------------  Now a geo query in canada---\n\n")
 
-results = query.query_geo_vector(vector)
-for result in results:
-    print("name : " + result.payload["picture"] + " :: score: " + str(result.score) + " :: " + result.payload["url"])
+querier.query_geo_vector(embedding=vector, country="DE")
 
 print("finished")

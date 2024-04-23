@@ -30,11 +30,11 @@ extractor = get_extractor(
 )
 
 root='../query_image/' # (e.g., './images/)
-batch_size = 32
+batch_size = 1
 
 dataset = ImageDataset(
     root=root,
-    out_path='../query_image',
+    out_path='../test_images',
     backend=extractor.get_backend(), # backend framework of model
     transforms=extractor.get_transformations(resize_dim=256, crop_dim=224) # set the input dimensionality to whichever values are required for your pretrained model
 )
