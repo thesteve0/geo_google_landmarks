@@ -8,8 +8,8 @@ vector = make_embeddings_query.get_features()
 
 querier = db_query.DBQuery()
 querier.query_vector(vector)
-# for result in results:
-#     print("name : " + result.payload["picture"] + " :: score: " + str(result.score))
+for result in results:
+    print("name : " + result.payload["picture"] + " :: score: " + str(result.score))
 
 print("\n\n------------  Now a geo query in canada---\n\n")
 
